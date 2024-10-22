@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner de Redes Wi-Fi</title>
+</head>
+<body>
+    <h1>Scanner de Redes Wi-Fi</h1>
+    <div id="network-list"></div>
+    
+    <script>
+        async function fetchNetworks() {
+            try {
+                const response = await fetch('http://localhost:5000/scan');
+                const data = await response.json();
+                
+                const listElement = document.getElementById('network-list');
+                listElement.innerHTML = '';
+                data.forEach(network => {
+                    const listItem = document.createElement('div');
+                    listItem.textContent = `SSID: ${network.ssid} | BSSID: ${network.bssid} | Sinal: ${network.signal}`;
+                    listElement.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar redes:', error);
+            }
+        }
+
+        window.onload = fetchNetworks;
+    </script>
+</body>
+</html>
